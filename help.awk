@@ -16,13 +16,17 @@ BEGIN {
     # Process lines that match the pattern and determine the max length of 1st column
     if (/^[[:alnum:]_-]+:.*## .*$/) {
         n++;
-        split($0, cols[n], ":.*## ");
-        l = length(cols[n][1]);
+
+        split($0, parts, ":.*## ");
+        targets[n] = parts[1];
+        helps[n] = parts[2];
+
+        l = length(targets[n]);
         if (w < l)
             w = l;
     }
 }
 END {
     for (i = 1; i <= n; i++)
-        printf "\033[1m\033[93m%-*s\033[0m %s\n", w + 1, cols[i][1] ":", cols[i][2];
+        printf "\033[1m\033[93m%-*s\033[0m %s\n", w + 1, targets[i] ":", helps[i];
 }
